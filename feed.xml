@@ -1,0 +1,44 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<rss version='2.0' xmlns:atom='http://www.w3.org/2005/Atom'>
+<channel>
+<atom:link href='http://tangrammer.github.io/' rel='self' type='application/rss+xml'/>
+<generator>
+clj-rss
+</generator>
+<title>
+on the clojure move
+</title>
+<link>
+http://tangrammer.github.io/
+</link>
+<description>
+About my clojure adventure
+</description>
+<lastBuildDate>
+Fri, 12 Dec 2014 19:11:11 +0000
+</lastBuildDate>
+<author>
+@tangrammer
+</author>
+<item>
+<guid>
+http://tangrammer.github.io/blog/posts/12-12-2014-bigbang.html
+</guid>
+<link>
+http://tangrammer.github.io/blog/posts/12-12-2014-bigbang.html
+</link>
+<title>
+Customizing systems
+</title>
+<description>
+&lt;h2&gt;&lt;a name=&quot;using&amp;#95;bigbang&quot;&gt;&lt;/a&gt;Using BigBang&lt;/h2&gt;Compose stuartsierra.component/update(s)-system in start invocation time
+</description>
+<pubDate>
+Fri, 12 Dec 2014 00:00:00 +0000
+</pubDate>
+<author>
+@tangrammer
+</author>
+</item>
+</channel>
+</rss>
