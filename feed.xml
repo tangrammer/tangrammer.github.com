@@ -15,7 +15,7 @@ http://tangrammer.github.io/
 functional experiences from clojure language
 </description>
 <lastBuildDate>
-Mon, 15 Dec 2014 19:07:07 +0100
+Mon, 15 Dec 2014 20:00:19 +0100
 </lastBuildDate>
 <author>
 @tangrammer
@@ -90,6 +90,26 @@ user&amp;gt; &amp;#40;nil? &amp;#40;system-started :c&amp;#41;&amp;#41;
 </description>
 <pubDate>
 Fri, 12 Dec 2014 00:00:00 +0100
+</pubDate>
+<author>
+@tangrammer
+</author>
+</item>
+<item>
+<guid>
+http://tangrammer.github.io/posts/01-12-2014-move-clojure.html
+</guid>
+<link>
+http://tangrammer.github.io/posts/01-12-2014-move-clojure.html
+</link>
+<title>
+on the clojure move
+</title>
+<description>
+&lt;p&gt;Almost three years have passed since my first clojure &lt;em&gt;collision&lt;/em&gt; and now my first post about the result clojure moving.... &lt;/p&gt;&lt;p&gt;Now starting to publish about it! &lt;/p&gt;&lt;p&gt;Hope you enjoy!&lt;/p&gt;
+</description>
+<pubDate>
+Mon, 01 Dec 2014 00:00:00 +0100
 </pubDate>
 <author>
 @tangrammer
