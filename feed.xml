@@ -12,10 +12,10 @@ on the clojure move
 http://tangrammer.github.io/
 </link>
 <description>
-About my clojure adventure
+functional experiences from clojure language
 </description>
 <lastBuildDate>
-Sun, 14 Dec 2014 02:05:04 +0000
+Mon, 15 Dec 2014 18:51:57 +0100
 </lastBuildDate>
 <author>
 @tangrammer
@@ -28,13 +28,68 @@ http://tangrammer.github.io/posts/12-12-2014-bigbang.html
 http://tangrammer.github.io/posts/12-12-2014-bigbang.html
 </link>
 <title>
-Customizing systems
+Customizing stuartsierra/component
 </title>
 <description>
-&lt;h2&gt;&lt;a name=&quot;using&amp;#95;bigbang&quot;&gt;&lt;/a&gt;Using BigBang&lt;/h2&gt;Compose stuartsierra.component/update(s)-system in start invocation time
+&lt;p&gt;My interest in customization systems started when I tryed to achieve &lt;a href='https://github.com/tangrammer/webclient-system-diagram'&gt;real time system visualisations&lt;/a&gt;, and &lt;a href='https://github.com/tangrammer/co-dependency'&gt;reverse dependency injection (also called 'co-dependency')&lt;/a&gt;. To solve both requirements I started with forking original stuartsierra/component library until I realised that I could use the &lt;em&gt;&quot;customization way&quot;&lt;/em&gt; of this library&lt;/p&gt;&lt;h2&gt;&lt;a name=&quot;what&amp;#95;is&amp;#95;a&amp;#95;component?&quot;&gt;&lt;/a&gt;what is a component?&lt;/h2&gt;Extracted from the component/&lt;a href='https://github.com/stuartsierra/component/blob/master/README.md'&gt;README&lt;/a&gt;&lt;blockquote&gt;&lt;p&gt; For the purposes of this framework, a component is a collection of functions or procedures which &lt;strong&gt;share some runtime state&lt;/strong&gt;. &lt;/p&gt;&lt;/blockquote&gt;&lt;p&gt;But, I really think that we can improve the clarity of this definition with my following one:&lt;h4&gt;&lt;a name=&quot;started-component&amp;#95;(own&amp;#95;definition&amp;#95;proposal)&quot;&gt;&lt;/a&gt;started-component (own definition proposal)&lt;/h4&gt;&lt;blockquote&gt;&lt;p&gt; &lt;strong&gt;a started&lt;/strong&gt; component is a collection of functions or procedures wich share some runtime state &lt;strong&gt;produced in component/start&lt;/strong&gt; (possibly using other started components, also called dependencies)&lt;br /&gt; &lt;/p&gt;&lt;/blockquote&gt;One example of started-component can be a webserver component listening on a specific port. As you can realise, once the server is started the port is assigned, then if you try to start again your server component using same port value you'll get a &lt;strong&gt;&quot;java.net.BindException: Address already in use:&quot;&lt;/strong&gt; &lt;/p&gt;&lt;h2&gt;&lt;a name=&quot;update-system:&amp;#95;for&amp;#95;everything&amp;#95;and&amp;#95;everywhere&quot;&gt;&lt;/a&gt;update-system: for everything and everywhere&lt;/h2&gt;&lt;p&gt;IMHO this update-system is the key function to understand the internals and the endless posibilities of stuartsierra/component library, &lt;strong&gt;used to update, start or customize&lt;/strong&gt; your component system.&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;clojure&quot;&gt;&amp;#40;defn update-system
+  &amp;quot;Invokes &amp;#40;apply f component args&amp;#41; on each of the components at
+  component-keys in the system, in dependency order. Before invoking
+  f, assoc's updated dependencies of the component.&amp;quot;
+  &amp;#91;system component-keys f &amp;amp; args&amp;#93;
+  &amp;#40;let &amp;#91;graph &amp;#40;dependency-graph system component-keys&amp;#41;&amp;#93;
+    &amp;#40;reduce &amp;#40;fn &amp;#91;system key&amp;#93;
+              &amp;#40;assoc system key
+                     &amp;#40;-&amp;gt; &amp;#40;get-component system key&amp;#41;
+                         &amp;#40;assoc-dependencies system&amp;#41;
+                         &amp;#40;try-action system key f args&amp;#41;&amp;#41;&amp;#41;&amp;#41;
+            system
+            &amp;#40;sort &amp;#40;dep/topo-comparator graph&amp;#41; component-keys&amp;#41;&amp;#41;&amp;#41;&amp;#41;
+&lt;/code&gt;&lt;/pre&gt;...so update-system it's a common reduction on the system that applies any fn to each component after injecting fresh dependencies. And... logically, &lt;em&gt;if we pass a system and a fn we get a new-updated-system&lt;/em&gt;. &lt;br /&gt; &lt;br /&gt; &lt;br /&gt;&lt;h4&gt;&lt;a name=&quot;&lt;strong&gt;update-system:&amp;#95;to&amp;#95;start&amp;#95;your&amp;#95;system&amp;#95;(all&amp;#95;your&amp;#95;components)&lt;/strong&gt;&quot;&gt;&lt;/a&gt;&lt;strong&gt;update-system: to start your system (all your components)&lt;/strong&gt;&lt;/h4&gt;&lt;p&gt;As you can see: &lt;a href='https://github.com/stuartsierra/component/blob/master/src/com/stuartsierra/component.clj#L151'&gt;component/start-system&lt;/a&gt; also uses &lt;code&gt;component/update-system&lt;/code&gt; to call component/start to get the system started. &lt;br /&gt;    &lt;/p&gt; &lt;br /&gt;&lt;h4&gt;&lt;a name=&quot;&lt;strong&gt;update-system:&amp;#95;to&amp;#95;customize&amp;#95;your&amp;#95;system&amp;#95;(all&amp;#95;your&amp;#95;components)&lt;/strong&gt;&quot;&gt;&lt;/a&gt;&lt;strong&gt;update-system: to customize your system (all your components)&lt;/strong&gt;&lt;/h4&gt;&lt;p&gt;Extracted from component/&lt;a href='https://github.com/stuartsierra/component/blob/master/README.md#customization'&gt;README#customization&lt;/a&gt; :&lt;/p&gt;&lt;blockquote&gt;&lt;p&gt; Both &lt;code&gt;update-system&lt;/code&gt; and &lt;code&gt;update-system-reverse&lt;/code&gt; take a function as an argument  &lt;br /&gt;and call it on each component in the system.&lt;br /&gt;Along the way, they &lt;code&gt;assoc&lt;/code&gt; in the updated dependencies of each component.  &lt;br /&gt;The &lt;code&gt;update-system&lt;/code&gt; function iterates over the components in dependency order  &lt;br /&gt; (a component will be called after its dependencies).... &lt;/p&gt;&lt;/blockquote&gt; &lt;br /&gt;&lt;h2&gt;&lt;a name=&quot;how&amp;#95;can&amp;#95;i&amp;#95;customize&amp;#95;my&amp;#95;component?&quot;&gt;&lt;/a&gt;How can I customize my component?&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;In the component world, customizing your component is&lt;/strong&gt; to apply updates to the component before injecting it into its dependants (or before leaving this component in the system to others components to use it).&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;clojure&quot;&gt;;; so in other words ... the update-system internal code :-
+		&amp;#40;assoc system key
+	                 &amp;#40;-&amp;gt; &amp;#40;get-component system key&amp;#41;
+	                     &amp;#40;assoc-dependencies system&amp;#41;
+	                     &amp;#40;try-action system key f args&amp;#41;&amp;#41;&amp;#41;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;You can update your system (all your components) with update-system function like that: &lt;br /&gt;&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;clojure&quot;&gt;
+&amp;#40;defn component-customizer&amp;#91;component &amp;amp; args&amp;#93;
+	... apply any transformation to your component and return your component updated
+  	component&amp;#41;
+  	
+
+&amp;#40;component/update-system your-system component-customizer&amp;#41; 	
+  	
+&lt;/code&gt;&lt;/pre&gt;&lt;h2&gt;&lt;a name=&quot;when&amp;#95;can&amp;#95;i&amp;#95;customize&amp;#95;my&amp;#95;component?&quot;&gt;&lt;/a&gt;When can I customize my component?&lt;/h2&gt;&lt;p&gt;Try to rethink my previous started-component example, and...&lt;blockquote&gt;&lt;p&gt;One example of started-component can be a webserver component listening on a specific port. As you can realise, once the server is started the port is assigned, then if you try to start again your server component using same port value you'll get a &lt;strong&gt;&quot;java.net.BindException: Address already in use:&quot;&lt;/strong&gt;&lt;br /&gt; &lt;/p&gt;&lt;/blockquote&gt;&lt;/p&gt;&lt;p&gt;let's find the differences of two following sequence calls:&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;clojure&quot;&gt;&amp;#40;-&amp;gt; system                                              ;;  {components}
+    &amp;#40;component/update-system your-update-fn your-args&amp;#41;  ;;  {updated-components}
+    &amp;#40;component/update-system component/start&amp;#41;           ;;  {started-updated-components}
+    
+&amp;#40;-&amp;gt; system                                              ;;  {components}
+    &amp;#40;component/update-system component/start&amp;#41;           ;;  {started-components} 
+    &amp;#40;component/update-system your-update-fn your-args&amp;#41;  ;;  {updated-started-components}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Yes, we get different results &lt;code&gt;{started-updated-components}&lt;/code&gt; vs &lt;code&gt;{updated-started-components}&lt;/code&gt;, and If we simplify the problem...&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;clojure&quot;&gt;;; case 1 {started-updated-components}
+
+user&amp;gt; &amp;#40;def system {:a 1}&amp;#41;
+user&amp;gt; &amp;#40;def system-updated &amp;#40;assoc system :c 3&amp;#41;&amp;#41;
+user&amp;gt; &amp;#40;def system-started &amp;#40;assoc system-updated :b 2&amp;#41;&amp;#41;
+user&amp;gt;  &amp;#40;system-started :c&amp;#41;
+=&amp;gt; :3
+
+;; case 2 {updated-started-components}
+
+user&amp;gt; &amp;#40;def system {:a 1}&amp;#41;
+user&amp;gt; &amp;#40;def system-started &amp;#40;assoc system :b 2&amp;#41;&amp;#41;
+user&amp;gt; &amp;#40;def system-updated &amp;#40;assoc system-started :c 3&amp;#41;&amp;#41;
+user&amp;gt; &amp;#40;nil? &amp;#40;system-started :c&amp;#41;&amp;#41;
+=&amp;gt; true
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&lt;strong&gt;When we update our system with component/start we get the running system state and further updates over this running system state are not available to this started-system-value&lt;/strong&gt;&lt;/p&gt;&lt;h2&gt;&lt;a name=&quot;bigbang:&amp;#95;all&amp;#95;component&amp;#95;updates&amp;#95;are&amp;#95;just-before&amp;#95;and&amp;#95;just-after&amp;#95;component/start&quot;&gt;&lt;/a&gt;BigBang: all component updates are just-before and just-after component/start&lt;/h2&gt;&lt;a href='https://github.com/milesian/BigBang'&gt;milesian/BigBang&lt;/a&gt; generalize the &quot;how and when can you customize your system?&quot; &lt;strong&gt;letting you compose all your component updates in the same component/start invocation time&lt;/strong&gt;, but distinguishing those updates that have to happen just-before from those that have to happen just-after component/start.&lt;p&gt;So you write this code&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;clojure&quot;&gt;
+&amp;#40;bigbang/expand system-map
+                        {:before-start &amp;#91;&amp;#91;fn1 arg1&amp;#93;
+                                        &amp;#91;fn2 arg1 arg2&amp;#93;&amp;#93;
+                         :after-start  &amp;#91;&amp;#91;fn3 arg1 arg2&amp;#93;
+                                        &amp;#91;fn4 arg1&amp;#93;&amp;#93;}&amp;#41;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;and you get this&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;clojure&quot;&gt;&amp;#40;update-system system-map #&amp;#40;comp &amp;#40;apply fn4 &amp;#91;arg1&amp;#93;&amp;#41; &amp;#40;apply fn3 &amp;#91;arg1 arg2&amp;#93;&amp;#41; component/start &amp;#40;apply fn2 &amp;#91;arg1 arg2&amp;#93;&amp;#41; &amp;#40;apply fn1 &amp;#91;arg1&amp;#93;&amp;#41;&amp;#41;
+&lt;/code&gt;&lt;/pre&gt;
 </description>
 <pubDate>
-Fri, 12 Dec 2014 00:00:00 +0000
+Fri, 12 Dec 2014 00:00:00 +0100
 </pubDate>
 <author>
 @tangrammer

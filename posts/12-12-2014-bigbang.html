@@ -1,7 +1,7 @@
 <html>
     <head>
         <meta charset="utf-8"/>
-        <title>: on the clojure move: Customizing systems :</title>
+        <title>: on the clojure move: Customizing stuartsierra/component :</title>
         <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css">
         <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
         <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.1/styles/default.min.css">
@@ -18,7 +18,6 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <h1><a href="/index.html">on the clojure move</a></h1>
             </div>
             <!-- nav links -->
             <!--/.nav-collapse -->
@@ -27,16 +26,17 @@
 <div class="container">
 
             <!-- nav links -->
+
             <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li ><a href="/index.html">Home</a></li>
-                    <li ><a href="/archives.html">Archives</a></li>
+                    <li ><a href="/index.html">on the clojure move</a></li>
+                    <li ><a href="/archives.html">archives</a></li>
                     
                     <li >
-                        <a href="/pages/about.html">Hello</a>
+                        <a href="/pages/about.html">@tangrammer</a>
                     </li>
                     
-                    <li><a href="/feed.xml">RSS</a></li>
+                    <li><a href="/feed.xml">rss</a></li>
                 </ul>
             </div><!--/.nav-collapse -->
         </div>
@@ -49,21 +49,78 @@
                 
 <div id="post">
         <div id="post-header">
-        <h2>Customizing systems</h2>
+        <h2>Customizing stuartsierra/component</h2>
         <div id="post-meta">
             
             <div class="date">December 12, 2014</div>
         </div>
     </div>
     <div>
-        <ol class="contents"><li><a href="#using_bigbang">Using BigBang</a></li></ol>
-        <h2><a name="using&#95;bigbang"></a>Using BigBang</h2>Compose stuartsierra.component/update(s)-system in start invocation time
+        <ol class="contents"><li><a href="#what_is_a_component?">what is a component?</a></li><li><a href="#update-system:_for_everything_and_everywhere">update-system: for everything and everywhere</a></li><li><a href="#how_can_i_customize_my_component?">How can I customize my component?</a></li><li><a href="#when_can_i_customize_my_component?">When can I customize my component?</a></li><li><a href="#bigbang:_all_component_updates_are_just-before_and_just-after_component/start">BigBang: all component updates are just-before and just-after component/start</a></li></ol>
+        <p>My interest in customization systems started when I tryed to achieve <a href='https://github.com/tangrammer/webclient-system-diagram'>real time system visualisations</a>, and <a href='https://github.com/tangrammer/co-dependency'>reverse dependency injection (also called 'co-dependency')</a>. To solve both requirements I started with forking original stuartsierra/component library until I realised that I could use the <em>"customization way"</em> of this library</p><h2><a name="what&#95;is&#95;a&#95;component?"></a>what is a component?</h2>Extracted from the component/<a href='https://github.com/stuartsierra/component/blob/master/README.md'>README</a><blockquote><p> For the purposes of this framework, a component is a collection of functions or procedures which <strong>share some runtime state</strong>. </p></blockquote><p>But, I really think that we can improve the clarity of this definition with my following one:<h4><a name="started-component&#95;(own&#95;definition&#95;proposal)"></a>started-component (own definition proposal)</h4><blockquote><p> <strong>a started</strong> component is a collection of functions or procedures wich share some runtime state <strong>produced in component/start</strong> (possibly using other started components, also called dependencies)<br /> </p></blockquote>One example of started-component can be a webserver component listening on a specific port. As you can realise, once the server is started the port is assigned, then if you try to start again your server component using same port value you'll get a <strong>"java.net.BindException: Address already in use:"</strong> </p><h2><a name="update-system:&#95;for&#95;everything&#95;and&#95;everywhere"></a>update-system: for everything and everywhere</h2><p>IMHO this update-system is the key function to understand the internals and the endless posibilities of stuartsierra/component library, <strong>used to update, start or customize</strong> your component system.</p><pre><code class="clojure">&#40;defn update-system
+  &quot;Invokes &#40;apply f component args&#41; on each of the components at
+  component-keys in the system, in dependency order. Before invoking
+  f, assoc's updated dependencies of the component.&quot;
+  &#91;system component-keys f &amp; args&#93;
+  &#40;let &#91;graph &#40;dependency-graph system component-keys&#41;&#93;
+    &#40;reduce &#40;fn &#91;system key&#93;
+              &#40;assoc system key
+                     &#40;-&gt; &#40;get-component system key&#41;
+                         &#40;assoc-dependencies system&#41;
+                         &#40;try-action system key f args&#41;&#41;&#41;&#41;
+            system
+            &#40;sort &#40;dep/topo-comparator graph&#41; component-keys&#41;&#41;&#41;&#41;
+</code></pre>...so update-system it's a common reduction on the system that applies any fn to each component after injecting fresh dependencies. And... logically, <em>if we pass a system and a fn we get a new-updated-system</em>. <br /> <br /> <br /><h4><a name="<strong>update-system:&#95;to&#95;start&#95;your&#95;system&#95;(all&#95;your&#95;components)</strong>"></a><strong>update-system: to start your system (all your components)</strong></h4><p>As you can see: <a href='https://github.com/stuartsierra/component/blob/master/src/com/stuartsierra/component.clj#L151'>component/start-system</a> also uses <code>component/update-system</code> to call component/start to get the system started. <br />    </p> <br /><h4><a name="<strong>update-system:&#95;to&#95;customize&#95;your&#95;system&#95;(all&#95;your&#95;components)</strong>"></a><strong>update-system: to customize your system (all your components)</strong></h4><p>Extracted from component/<a href='https://github.com/stuartsierra/component/blob/master/README.md#customization'>README#customization</a> :</p><blockquote><p> Both <code>update-system</code> and <code>update-system-reverse</code> take a function as an argument  <br />and call it on each component in the system.<br />Along the way, they <code>assoc</code> in the updated dependencies of each component.  <br />The <code>update-system</code> function iterates over the components in dependency order  <br /> (a component will be called after its dependencies).... </p></blockquote> <br /><h2><a name="how&#95;can&#95;i&#95;customize&#95;my&#95;component?"></a>How can I customize my component?</h2><p><strong>In the component world, customizing your component is</strong> to apply updates to the component before injecting it into its dependants (or before leaving this component in the system to others components to use it).</p><pre><code class="clojure">;; so in other words ... the update-system internal code :-
+		&#40;assoc system key
+	                 &#40;-&gt; &#40;get-component system key&#41;
+	                     &#40;assoc-dependencies system&#41;
+	                     &#40;try-action system key f args&#41;&#41;&#41;
+</code></pre><p>You can update your system (all your components) with update-system function like that: <br /></p><pre><code class="clojure">
+&#40;defn component-customizer&#91;component &amp; args&#93;
+	... apply any transformation to your component and return your component updated
+  	component&#41;
+  	
+
+&#40;component/update-system your-system component-customizer&#41; 	
+  	
+</code></pre><h2><a name="when&#95;can&#95;i&#95;customize&#95;my&#95;component?"></a>When can I customize my component?</h2><p>Try to rethink my previous started-component example, and...<blockquote><p>One example of started-component can be a webserver component listening on a specific port. As you can realise, once the server is started the port is assigned, then if you try to start again your server component using same port value you'll get a <strong>"java.net.BindException: Address already in use:"</strong><br /> </p></blockquote></p><p>let's find the differences of two following sequence calls:</p><pre><code class="clojure">&#40;-&gt; system                                              ;;  {components}
+    &#40;component/update-system your-update-fn your-args&#41;  ;;  {updated-components}
+    &#40;component/update-system component/start&#41;           ;;  {started-updated-components}
+    
+&#40;-&gt; system                                              ;;  {components}
+    &#40;component/update-system component/start&#41;           ;;  {started-components} 
+    &#40;component/update-system your-update-fn your-args&#41;  ;;  {updated-started-components}
+</code></pre><p>Yes, we get different results <code>{started-updated-components}</code> vs <code>{updated-started-components}</code>, and If we simplify the problem...</p><pre><code class="clojure">;; case 1 {started-updated-components}
+
+user&gt; &#40;def system {:a 1}&#41;
+user&gt; &#40;def system-updated &#40;assoc system :c 3&#41;&#41;
+user&gt; &#40;def system-started &#40;assoc system-updated :b 2&#41;&#41;
+user&gt;  &#40;system-started :c&#41;
+=&gt; :3
+
+;; case 2 {updated-started-components}
+
+user&gt; &#40;def system {:a 1}&#41;
+user&gt; &#40;def system-started &#40;assoc system :b 2&#41;&#41;
+user&gt; &#40;def system-updated &#40;assoc system-started :c 3&#41;&#41;
+user&gt; &#40;nil? &#40;system-started :c&#41;&#41;
+=&gt; true
+</code></pre><p><strong>When we update our system with component/start we get the running system state and further updates over this running system state are not available to this started-system-value</strong></p><h2><a name="bigbang:&#95;all&#95;component&#95;updates&#95;are&#95;just-before&#95;and&#95;just-after&#95;component/start"></a>BigBang: all component updates are just-before and just-after component/start</h2><a href='https://github.com/milesian/BigBang'>milesian/BigBang</a> generalize the "how and when can you customize your system?" <strong>letting you compose all your component updates in the same component/start invocation time</strong>, but distinguishing those updates that have to happen just-before from those that have to happen just-after component/start.<p>So you write this code</p><pre><code class="clojure">
+&#40;bigbang/expand system-map
+                        {:before-start &#91;&#91;fn1 arg1&#93;
+                                        &#91;fn2 arg1 arg2&#93;&#93;
+                         :after-start  &#91;&#91;fn3 arg1 arg2&#93;
+                                        &#91;fn4 arg1&#93;&#93;}&#41;
+</code></pre><p>and you get this</p><pre><code class="clojure">&#40;update-system system-map #&#40;comp &#40;apply fn4 &#91;arg1&#93;&#41; &#40;apply fn3 &#91;arg1 arg2&#93;&#41; component/start &#40;apply fn2 &#91;arg1 arg2&#93;&#41; &#40;apply fn1 &#91;arg1&#93;&#41;&#41;
+</code></pre>
     </div>
     
     <div id="tags">
         <b>Tags: </b>
         
         <a href="/tags/milesian.html">milesian</a>
+        
+        <a href="/tags/stuartsierra-component.html">stuartsierra-component</a>
         
         <a href="/tags/bigbang.html">bigbang</a>
         
@@ -77,6 +134,15 @@
     </div>
 
     
+    <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//tangrammer.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    
 
 
 </div>
@@ -88,15 +154,15 @@
                 <div id="sidebar">
                     <h3>Links</h3>
                     <ul id="links">
-                        <li><img src="https://g.twimg.com/Twitter_logo_blue.png" width="16">
-                          <a href="http://twitter.com/tangrammer/">twitter.com/tangrammer</a></li>
+                        <li>
+                        <a href="http://github.com/juxt">github.com/juxt</a></li>
                         
                     </ul>
                     <div id="recent">
                         <h3>Recent Posts</h3>
                         <ul>
                         
-                        <li><a href="/posts/12-12-2014-bigbang.html">Customizing systems</a></li>
+                        <li><a href="/posts/12-12-2014-bigbang.html">Customizing stuartsierra/component</a></li>
                         
                         </ul>
                     </div>
@@ -106,6 +172,8 @@
                         
                         <li><a href="/tags/bigbang.html">bigbang</a></li>
                         
+                        <li><a href="/tags/stuartsierra-component.html">stuartsierra-component</a></li>
+                        
                         <li><a href="/tags/milesian.html">milesian</a></li>
                         
                         </ul>
@@ -113,7 +181,18 @@
                 </div>
             </div>
         </div>
-        <footer>Copyright &copy; 2014 Juan A. Ruz
+
+        <footer>
+          <p align="center">
+	    <img src="https://g.twimg.com/Twitter_logo_blue.png" width="16">
+            <a href="http://twitter.com/tangrammer/">twitter.com/tangrammer</a>
+	    |
+	    <img src="https://raw.github.com/github/media/master/octocats/blacktocat-16.png">
+            <a href="http://github.com/tangrammer/">github.com/tangrammer</a>
+	    |
+	    <a href="/feed.xml">Atom Feed</a>
+          </p>
+Copyright &copy; 2014 Juan A. Ruz
             <p style="text-align: center;">Site generator powered by <a href="https://github.com/lacarmen/cryogen">Cryogen</a></p></footer>
     </div>
         <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>

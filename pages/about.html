@@ -1,7 +1,7 @@
 <html>
     <head>
         <meta charset="utf-8"/>
-        <title>: on the clojure move: Hello :</title>
+        <title>: on the clojure move: @tangrammer :</title>
         <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css">
         <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
         <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.1/styles/default.min.css">
@@ -18,7 +18,6 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <h1><a href="/index.html">on the clojure move</a></h1>
             </div>
             <!-- nav links -->
             <!--/.nav-collapse -->
@@ -27,16 +26,17 @@
 <div class="container">
 
             <!-- nav links -->
+
             <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li ><a href="/index.html">Home</a></li>
-                    <li ><a href="/archives.html">Archives</a></li>
+                    <li ><a href="/index.html">on the clojure move</a></li>
+                    <li ><a href="/archives.html">archives</a></li>
                     
                     <li  class="active" >
-                        <a href="/pages/about.html">Hello</a>
+                        <a href="/pages/about.html">@tangrammer</a>
                     </li>
                     
-                    <li><a href="/feed.xml">RSS</a></li>
+                    <li><a href="/feed.xml">rss</a></li>
                 </ul>
             </div><!--/.nav-collapse -->
         </div>
@@ -49,10 +49,10 @@
                 
 <div id="custom-page">
     <div id="page-header">
-        <h2>Hello</h2>
+        <h2>@tangrammer</h2>
     </div>
     
-    <p>My name is Juan Antonio Ruz, I'm 38 years old, live in Spain and in a self-taught way I started to develop more than 10 years ago ...</p><p>This is my very summarised experience since 2006:</p><h3><a name="jee"></a>JEE</h3><strong>(2006/2012)</strong><p>During this time I was highly focused in JEE, working on companies (Hewlett Packard - Senior Programmer) and as a freelance developer and consultant. I worked with following patterns MVC, ORM and DI implemented on different frameworks (Struts, JSF, EJB3, Hibernate, Spring, Seam,  ...). From my java beginning, I always tried to develop with TDD and XP methodologies and was very passionate in Event and Aspect Oriented Programming. I worked as JavaEE teacher too, on private and public companies (+ 1500 Hours)</p><h3><a name="ror/js"></a>RoR/js</h3><strong>(2011/2013)</strong><p>Looking forward to do a bit creative and experimental programming I decided to migrate to dynamic languages (RoR, js) and data visualization (processing.org, openlayers, d3.js) lands</p><h3><a name="js/clojure/clojurescript"></a>js/Clojure/ClojureScript</h3><strong>(2012/now)</strong><p>I discovered clojure with <a href='https://github.com/quil/quil'>quil</a> (clojure on top of <a href='http://processing.org/'>processing.org</a>). From then, my fascination about its LISP features and the clojure community never ends.</p><h4><a name="enterpriseweb.com"></a>enterpriseweb.com</h4><strong>2012/2013</strong><p>I was teleworking  with <a href='http://enterpriseweb.com/'>enterpriseweb.com</a> a New Yorker company doing a lot of js (nodejs, requirejs, jquery, jasmine, D3 ...), clojure and clojurescript. During this time I had to get familiar with big data concepts and concurrent patterns. That's the reasong that I have some background on hadoop, zookeeper, solr, mongodb, accumulo and related clojure libs (liebke/zookeeper-clj, liebke/avout, nathanmarz/cascalog, alexott/clojure-hadoop). In this time  I developed some clojure projects using <a href='https://www.openstack.org/'>open-stack</a> clojure rest <a href='https://github.com/tangrammer/open-stack-wrapper'>wrapper</a> , a snmp4j clojure rest wrapper , and a open-stack clojurescript - om.clj - react.js UI <a href='https://github.com/tangrammer/open-stack-ui'>client</a>.</p><p>On this time I worked with core.async, core.logic, and swannodette/om. I attach some video examples to show superficially my interest on clojurescript and client side development.</p><p>This <a href='http://vimeo.com/89089056'>video</a> shows my own solution to achieve brepl live editing behavior, the same as clojurescriptone,  using the React/OM framework. The pattern used here communicates the components, in a core.async/CSP manner, putting a map of channels into the component channel. Using this pattern, the developer  can mix mock with real data and move between the different states of the app, only reevaluating the code on emacs (brepl + cemerick/austin)</p><p>And this other <a href='http://vimeo.com/89089056'>video</a> shows a previous js experiment project that was built thinking on async compose processes (pipelines), events and aspects. This framework lets swap coding (hot reloading code without browser reload) in dev mode. This feature is built on top of requirejs, socket.io and nodemon. The AOP/EOP orientation of this framework lets you easy filter the internal processes(pipelines) to make logging on the terminal, profiling or doing d3 process <a href='https://dl.dropboxusercontent.com/u/8688858/folding&#95;unfolding&#95;pipelines.mov'>visualisations</a> (<a href='https://dl.dropboxusercontent.com/u/8688858/desktop.png'>static image</a>)</p><h3><a name="juxt.pro"></a>juxt.pro</h3><strong>Last 6 months</strong><p>I had the chance to telework with <a href='https://github.com/juxt/'>JUXT</a> (a Londoner company, one of the most important clojurian  european companies). During this time I worked very closed with one of the founders <a href='https://github.com/malcolmsparks'>Malcolm Sparks</a> making serious contributions to <a href='https://github.com/juxt/cylon'>juxt/cylon</a>, <a href='https://github.com/juxt/cylon'>juxt/modular</a> During this time and very related to juxt/modular, I've worked in customizing <a href='https://github.com/stuartsierra/component'>stuartsierra/component</a> systems. Two reasons took me there, firstly Malcolm Sparks needed co-dependency to refine juxt/modular design and the other reason was my interest in getting real time visualization of component system calls. As a result of this research I've written a few tools and libs that I detail below:<ul><li><a href='https://github.com/tangrammer/co-dependency'>tangrammer/co-dependency</a> lets you use Reverse Dependency Injection</li><li><a href='https://github.com/milesian/BigBang'>milesian/BigBang</a> compose component/update(s)-system in component/start invocation time</li><li><a href='https://github.com/milesian/aop'>milesian/aop</a> uses AOP in stuartsierra/component systems </li></ul>Here you can see a <a href='https://camo.githubusercontent.com/282505e0818069e3871986cd00ef7513a0272f82/68747470733a2f2f646c2e64726f70626f7875736572636f6e74656e742e636f6d2f752f383638383835382f67726170685f7365712e706e67'>picture</a> and a <a href='https://vimeo.com/114150238'>video</a> , (I only clicked on opensensors.io login button and after getting the visualisations I sent the login form.) that shows the final result of real time visualization of component system calls</p><h3><a name="opensensors.io"></a>opensensors.io</h3><strong>Last 6 months</strong>As juxter developer usually I had to colaborate with  <a href='https://opensensors.io/'>opensensors.io</a>, a Londoner start-up about IoT  composed by a very high level developers: <a href='https://github.com/malcolmsparks'>Malcolm Sparks</a>,  <a href='https://github.com/michaelklishin'>Michael Klishin</a> and <a href='https://github.com/yods'>Yodit Stanton</a>.<p>I used to post my favorites on <a href='http://tangrammer.tumblr.com'>tumblr</a></p><p>And here, my <a href='http://www.4clojure.com/user/jaruz'>4clojure profile</a>, still in progress</p><p>My complete (and not update!) <a href='https://docs.google.com/document/d/1QpB1FU1aRWHMltD56dfJeyhJGT1jpWiZzf-q4e7-8vA/pub'>resume</a></p>
+    <p>Hello, my name is Juan Antonio Ruz, I'm 38 years old, live in Spain and in a self-taught way I started to develop more than 10 years ago ...</p><p>This is my very summarised experience since 2006:</p><h3><a name="jee"></a>JEE</h3><strong>(2006/2012)</strong> <p>During this time I was highly focused in JEE, working on companies (Hewlett Packard - Senior Programmer) and as a freelance developer and consultant. I worked with following patterns MVC, ORM and DI implemented on different frameworks (Struts, JSF, EJB3, Hibernate, Spring, Seam,  ...). From my java beginning, I always tried to develop with TDD and XP methodologies and was very passionate in Event and Aspect Oriented Programming. I worked as JavaEE teacher too, on private and public companies (+ 1500 Hours)</p><h3><a name="ror/js"></a>RoR/js</h3><strong>(2011/2013)</strong><p>Looking forward to do a bit creative and experimental programming I decided to migrate to dynamic languages (RoR, js) and data visualization (processing.org, openlayers, d3.js) lands</p><h3><a name="js/clojure/clojurescript"></a>js/Clojure/ClojureScript</h3><strong>(2012/now)</strong><p>I discovered clojure with <a href='https://github.com/quil/quil'>quil</a> (clojure on top of <a href='http://processing.org/'>processing.org</a>). From then, my fascination about its LISP features and the clojure community never ends.</p><h4><a name="enterpriseweb.com"></a>enterpriseweb.com</h4><strong>2012/2013</strong><p>I was teleworking  with <a href='http://enterpriseweb.com/'>enterpriseweb.com</a> a New Yorker company doing a lot of js (nodejs, requirejs, jquery, jasmine, D3 ...), clojure and clojurescript. During this time I had to get familiar with big data concepts and concurrent patterns. That's the reasong that I have some background on hadoop, zookeeper, solr, mongodb, accumulo and related clojure libs (liebke/zookeeper-clj, liebke/avout, nathanmarz/cascalog, alexott/clojure-hadoop). In this time  I developed some clojure projects using <a href='https://www.openstack.org/'>open-stack</a> clojure rest <a href='https://github.com/tangrammer/open-stack-wrapper'>wrapper</a> , a snmp4j clojure rest wrapper , and a open-stack clojurescript - om.clj - react.js UI <a href='https://github.com/tangrammer/open-stack-ui'>client</a>.</p><p>On this time I worked with core.async, core.logic, and swannodette/om. I attach some video examples to show superficially my interest on clojurescript and client side development.</p><p>This <a href='http://vimeo.com/89089056'>video</a> shows my own solution to achieve brepl live editing behavior, the same as clojurescriptone,  using the React/OM framework. The pattern used here communicates the components, in a core.async/CSP manner, putting a map of channels into the component channel. Using this pattern, the developer  can mix mock with real data and move between the different states of the app, only reevaluating the code on emacs (brepl + cemerick/austin)</p><p>And this other <a href='http://vimeo.com/89089056'>video</a> shows a previous js experiment project that was built thinking on async compose processes (pipelines), events and aspects. This framework lets swap coding (hot reloading code without browser reload) in dev mode. This feature is built on top of requirejs, socket.io and nodemon. The AOP/EOP orientation of this framework lets you easy filter the internal processes(pipelines) to make logging on the terminal, profiling or doing d3 process <a href='https://dl.dropboxusercontent.com/u/8688858/folding&#95;unfolding&#95;pipelines.mov'>visualisations</a> (<a href='https://dl.dropboxusercontent.com/u/8688858/desktop.png'>static image</a>)</p><h3><a name="juxt.pro"></a>juxt.pro</h3><strong>Last 6 months</strong><p>I had the chance to telework with <a href='https://github.com/juxt/'>JUXT</a> (a Londoner company, one of the most important clojurian  european companies). During this time I worked very closed with one of the founders <a href='https://github.com/malcolmsparks'>Malcolm Sparks</a> making serious contributions to <a href='https://github.com/juxt/cylon'>juxt/cylon</a>, <a href='https://github.com/juxt/cylon'>juxt/modular</a> During this time and very related to juxt/modular, I've worked in customizing <a href='https://github.com/stuartsierra/component'>stuartsierra/component</a> systems. Two reasons took me there, firstly Malcolm Sparks needed co-dependency to refine juxt/modular design and the other reason was my interest in getting real time visualization of component system calls. As a result of this research I've written a few tools and libs that I detail below:<ul><li><a href='https://github.com/tangrammer/co-dependency'>tangrammer/co-dependency</a> lets you use Reverse Dependency Injection</li><li><a href='https://github.com/milesian/BigBang'>milesian/BigBang</a> compose component/update(s)-system in component/start invocation time</li><li><a href='https://github.com/milesian/aop'>milesian/aop</a> uses AOP in stuartsierra/component systems </li></ul>Here you can see a <a href='https://camo.githubusercontent.com/282505e0818069e3871986cd00ef7513a0272f82/68747470733a2f2f646c2e64726f70626f7875736572636f6e74656e742e636f6d2f752f383638383835382f67726170685f7365712e706e67'>picture</a> and a <a href='https://vimeo.com/114150238'>video</a> , (I only clicked on opensensors.io login button and after getting the visualisations I sent the login form.) that shows the final result of real time visualization of component system calls</p><h3><a name="opensensors.io"></a>opensensors.io</h3><strong>Last 6 months</strong>As juxter developer usually I had to colaborate with  <a href='https://opensensors.io/'>opensensors.io</a>, a Londoner start-up about IoT  composed by a very high level developers: <a href='https://github.com/malcolmsparks'>Malcolm Sparks</a>,  <a href='https://github.com/michaelklishin'>Michael Klishin</a> and <a href='https://github.com/yods'>Yodit Stanton</a>.<p>I used to post my favorites on <a href='http://tangrammer.tumblr.com'>tumblr</a></p><p>And here, my <a href='http://www.4clojure.com/user/jaruz'>4clojure profile</a>, still in progress</p><p>My complete (and not update!) <a href='https://docs.google.com/document/d/1QpB1FU1aRWHMltD56dfJeyhJGT1jpWiZzf-q4e7-8vA/pub'>resume</a></p>
 
     <div id="prev-next">
         
@@ -68,15 +68,15 @@
                 <div id="sidebar">
                     <h3>Links</h3>
                     <ul id="links">
-                        <li><img src="https://g.twimg.com/Twitter_logo_blue.png" width="16">
-                          <a href="http://twitter.com/tangrammer/">twitter.com/tangrammer</a></li>
+                        <li>
+                        <a href="http://github.com/juxt">github.com/juxt</a></li>
                         
                     </ul>
                     <div id="recent">
                         <h3>Recent Posts</h3>
                         <ul>
                         
-                        <li><a href="/posts/12-12-2014-bigbang.html">Customizing systems</a></li>
+                        <li><a href="/posts/12-12-2014-bigbang.html">Customizing stuartsierra/component</a></li>
                         
                         </ul>
                     </div>
@@ -86,6 +86,8 @@
                         
                         <li><a href="/tags/bigbang.html">bigbang</a></li>
                         
+                        <li><a href="/tags/stuartsierra-component.html">stuartsierra-component</a></li>
+                        
                         <li><a href="/tags/milesian.html">milesian</a></li>
                         
                         </ul>
@@ -93,7 +95,18 @@
                 </div>
             </div>
         </div>
-        <footer>Copyright &copy; 2014 Juan A. Ruz
+
+        <footer>
+          <p align="center">
+	    <img src="https://g.twimg.com/Twitter_logo_blue.png" width="16">
+            <a href="http://twitter.com/tangrammer/">twitter.com/tangrammer</a>
+	    |
+	    <img src="https://raw.github.com/github/media/master/octocats/blacktocat-16.png">
+            <a href="http://github.com/tangrammer/">github.com/tangrammer</a>
+	    |
+	    <a href="/feed.xml">Atom Feed</a>
+          </p>
+Copyright &copy; 2014 Juan A. Ruz
             <p style="text-align: center;">Site generator powered by <a href="https://github.com/lacarmen/cryogen">Cryogen</a></p></footer>
     </div>
         <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>

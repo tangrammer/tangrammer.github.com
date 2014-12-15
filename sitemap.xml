@@ -5,7 +5,7 @@
 http://tangrammer.github.io/404.html
 </loc>
 <lastmod>
-2014-12-14
+2014-12-15
 </lastmod>
 </url>
 <url>
@@ -13,7 +13,7 @@ http://tangrammer.github.io/404.html
 http://tangrammer.github.io/archives.html
 </loc>
 <lastmod>
-2014-12-14
+2014-12-15
 </lastmod>
 </url>
 <url>
@@ -21,7 +21,7 @@ http://tangrammer.github.io/archives.html
 http://tangrammer.github.io/index.html
 </loc>
 <lastmod>
-2014-12-14
+2014-12-15
 </lastmod>
 </url>
 <url>
@@ -29,7 +29,7 @@ http://tangrammer.github.io/index.html
 http://tangrammer.github.io/pages/about.html
 </loc>
 <lastmod>
-2014-12-14
+2014-12-15
 </lastmod>
 </url>
 <url>
@@ -37,7 +37,7 @@ http://tangrammer.github.io/pages/about.html
 http://tangrammer.github.io/posts/12-12-2014-bigbang.html
 </loc>
 <lastmod>
-2014-12-14
+2014-12-15
 </lastmod>
 </url>
 <url>
@@ -45,7 +45,7 @@ http://tangrammer.github.io/posts/12-12-2014-bigbang.html
 http://tangrammer.github.io/tags/bigbang.html
 </loc>
 <lastmod>
-2014-12-14
+2014-12-15
 </lastmod>
 </url>
 <url>
@@ -53,7 +53,15 @@ http://tangrammer.github.io/tags/bigbang.html
 http://tangrammer.github.io/tags/milesian.html
 </loc>
 <lastmod>
-2014-12-14
+2014-12-15
+</lastmod>
+</url>
+<url>
+<loc>
+http://tangrammer.github.io/tags/stuartsierra-component.html
+</loc>
+<lastmod>
+2014-12-15
 </lastmod>
 </url>
 </urlset>
