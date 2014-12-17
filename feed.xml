@@ -15,7 +15,7 @@ http://tangrammer.github.io/
 functional experiences from clojure language
 </description>
 <lastBuildDate>
-Wed, 17 Dec 2014 01:16:21 +0100
+Wed, 17 Dec 2014 15:39:00 +0000
 </lastBuildDate>
 <author>
 @tangrammer
@@ -146,7 +146,7 @@ Apply AOP in stuartsierra/component
 &lt;/code&gt;&lt;/pre&gt;
 </description>
 <pubDate>
-Mon, 15 Dec 2014 00:00:00 +0100
+Mon, 15 Dec 2014 00:00:00 +0000
 </pubDate>
 <author>
 @tangrammer
@@ -221,7 +221,7 @@ user&amp;gt; &amp;#40;nil? &amp;#40;system-started :c&amp;#41;&amp;#41;
 &lt;/code&gt;&lt;/pre&gt;
 </description>
 <pubDate>
-Fri, 12 Dec 2014 00:00:00 +0100
+Fri, 12 Dec 2014 00:00:00 +0000
 </pubDate>
 <author>
 @tangrammer
@@ -248,7 +248,7 @@ cd resources/public &amp;amp;&amp;amp;  git add . &amp;amp;&amp;amp; git commit 
 &lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&lt;strong&gt;PS: now using &lt;a href='http://macdown.uranusjr.com/'&gt;MacDown&lt;/a&gt; as Markdown editor client&lt;/strong&gt;&lt;/p&gt;
 </description>
 <pubDate>
-Tue, 02 Dec 2014 00:00:00 +0100
+Tue, 02 Dec 2014 00:00:00 +0000
 </pubDate>
 <author>
 @tangrammer
@@ -268,7 +268,7 @@ on the clojure move
 &lt;p&gt;Almost three years have passed since my first clojure &lt;em&gt;collision&lt;/em&gt; and now my first post about the result clojure moving.... &lt;/p&gt;&lt;p&gt;Now starting to publish about it! &lt;/p&gt;&lt;p&gt;Hope you enjoy!&lt;/p&gt;
 </description>
 <pubDate>
-Mon, 01 Dec 2014 00:00:00 +0100
+Mon, 01 Dec 2014 00:00:00 +0000
 </pubDate>
 <author>
 @tangrammer
