@@ -15,11 +15,135 @@ http://tangrammer.github.io/
 functional experiences from clojure language
 </description>
 <lastBuildDate>
-Mon, 15 Dec 2014 20:37:27 +0100
+Wed, 17 Dec 2014 01:00:41 +0100
 </lastBuildDate>
 <author>
 @tangrammer
 </author>
+<item>
+<guid>
+http://tangrammer.github.io/posts/15-12-2014-milesian-aop.html
+</guid>
+<link>
+http://tangrammer.github.io/posts/15-12-2014-milesian-aop.html
+</link>
+<title>
+Apply AOP in stuartsierra/component
+</title>
+<description>
+   &lt;br /&gt;&lt;p&gt;&lt;img src=&quot;https://dl.dropboxusercontent.com/u/8688858/epicarp-small.gif&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;&lt;h3&gt;&lt;a name=&quot;introduction&quot;&gt;&lt;/a&gt;introduction&lt;/h3&gt;&lt;a href='https://github.com/milesian/aop'&gt;milesian/aop&lt;/a&gt;  lets you wrap your stuartsierra/components in the same way as AOP does. &lt;p&gt;... for those who aren't familiar with &lt;a href='http://en.wikipedia.org/wiki/Aspect-oriented&amp;#95;programming'&gt;AOP&lt;/a&gt;, it is a programming paradigme that aims to increase modularity by allowing the separation of cross-cutting concerns. Examples of cross-cutting concerns can be: applying security, logging and throwing events, and as wikipedia explains:&lt;blockquote&gt;&lt;p&gt; Logging exemplifies a crosscutting concern because a logging strategy necessarily affects every logged part of the system. Logging thereby crosscuts all logged classes and methods....  &lt;/p&gt;&lt;/blockquote&gt;&lt;/p&gt;&lt;h3&gt;&lt;a name=&quot;what&amp;#95;is&amp;#95;it&amp;#95;included?&quot;&gt;&lt;/a&gt;what is it included?&lt;/h3&gt;It includes a &lt;strong&gt;wrap function&lt;/strong&gt; as a customization system function and specific &lt;strong&gt;component-matchers&lt;/strong&gt; to calculate the-component-place where we'll apply middleware.&lt;h3&gt;&lt;a name=&quot;basic&amp;#95;howto&quot;&gt;&lt;/a&gt;basic howto&lt;/h3&gt;To simplify AOP meanings, let's try &lt;em&gt;refactoring&lt;/em&gt; for a while two AOP concepts to quickly understand the functionality provided.&lt;ul&gt;&lt;li&gt;the &lt;strong&gt;thing-to-happen&lt;/strong&gt; = aspect/cross-cutting concern&lt;/li&gt;&lt;li&gt;the &lt;strong&gt;place-where-will-happen&lt;/strong&gt; = target&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;So, basically to include a new &lt;strong&gt;thing-to-happen&lt;/strong&gt; in your component system, you need to define the &lt;strong&gt;thing-to-happen&lt;/strong&gt; and the &lt;strong&gt;place-where-will-happen&lt;/strong&gt;&lt;/p&gt; &lt;br /&gt;&lt;h4&gt;&lt;a name=&quot;&lt;strong&gt;thing-to-happen&lt;/strong&gt;&quot;&gt;&lt;/a&gt;&lt;strong&gt;thing-to-happen&lt;/strong&gt;&lt;/h4&gt;It's &lt;strong&gt;a function milddleware&lt;/strong&gt;, very similar to &lt;a href='https://github.com/ring-clojure/ring/wiki/Concepts#middleware'&gt;common ring middleware&lt;/a&gt;&lt;pre&gt;&lt;code class=&quot;clojure&quot;&gt;&amp;#40;defn your-fn-middleware
+  &amp;#91;&amp;#42;fn&amp;#42; this &amp;amp; args&amp;#93;
+  &amp;#40;let &amp;#91;fn-result &amp;#40;apply &amp;#42;fn&amp;#42; &amp;#40;conj args this&amp;#41;&amp;#41;&amp;#93;
+   fn-result&amp;#41;&amp;#41;
+&lt;/code&gt;&lt;/pre&gt; &lt;br /&gt;&lt;h4&gt;&lt;a name=&quot;&lt;strong&gt;place-where-will-happen&lt;/strong&gt;&quot;&gt;&lt;/a&gt;&lt;strong&gt;place-where-will-happen&lt;/strong&gt;&lt;/h4&gt;It's calculated with a &lt;a href='https://github.com/tangrammer/defrecord-wrapper/blob/master/src/defrecord&amp;#95;wrapper/aop.clj#L4'&gt;defrecord-wrapper.aop/Matcher&lt;/a&gt; protocol implementation&lt;pre&gt;&lt;code class=&quot;clojure&quot;&gt;&amp;#40;defprotocol defrecord-wrapper.aop/Matcher
+  &amp;#40;match &amp;#91;this protocol function-name function-args&amp;#93;&amp;#41;&amp;#41;
+&lt;/code&gt;&lt;/pre&gt;&lt;h3&gt;&lt;a name=&quot;minimal&amp;#95;example&quot;&gt;&lt;/a&gt;Minimal example&lt;/h3&gt;As you can see the options available to decide if the &lt;strong&gt;thing&lt;/strong&gt; has to happen in current &lt;strong&gt;place&lt;/strong&gt; are component protocol, function-name and function-argsLet's try to use this AOP stuff in a minimal example: &lt;h4&gt;&lt;a name=&quot;1.&amp;#95;define&amp;#95;protocols&amp;#95;and&amp;#95;component&quot;&gt;&lt;/a&gt;1. define protocols and component&lt;/h4&gt;&lt;pre&gt;&lt;code class=&quot;clojure&quot;&gt;&amp;#40;defprotocol Database
+  &amp;#40;save-user &amp;#91;&amp;#95; user&amp;#93;&amp;#41;
+  &amp;#40;remove-user &amp;#91;&amp;#95; user&amp;#93;&amp;#41;&amp;#41;
+
+&amp;#40;defprotocol WebSocket
+  &amp;#40;send &amp;#91;&amp;#95; data&amp;#93;&amp;#41;&amp;#41;
+
+&amp;#40;defrecord YourComponent &amp;#91;&amp;#93;
+  Database
+  &amp;#40;save-user &amp;#91;this user&amp;#93;
+    &amp;#40;format &amp;quot;saving user: %&amp;quot; user &amp;#41;&amp;#41;
+  &amp;#40;remove-user &amp;#91;this user&amp;#93;
+    &amp;#40;format &amp;quot;removing user: %&amp;quot; user &amp;#41;&amp;#41;
+  Websocket
+  &amp;#40;send &amp;#91;this data&amp;#93;
+    &amp;#40;format &amp;quot;sending data: %&amp;quot; data&amp;#41;&amp;#41;&amp;#41;
+   
+&lt;/code&gt;&lt;/pre&gt;&lt;h4&gt;&lt;a name=&quot;2.&amp;#95;define&amp;#95;your&amp;#95;matcher&amp;#95;(place-where-will-happen)&quot;&gt;&lt;/a&gt;2. define your matcher (place-where-will-happen)&lt;/h4&gt;&lt;pre&gt;&lt;code class=&quot;clojure&quot;&gt;;; maybe all your component fns protocols
+
+&amp;#40;defrecord YourComponentMatcher &amp;#91;&amp;#93;
+  defrecord-wrapper.aop/Matcher
+  &amp;#40;match &amp;#91;this protocol function-name function-args&amp;#93;
+    &amp;#40;contains? #{Database WebSocket} protocol&amp;#41;&amp;#41;&amp;#41;
+
+;; or maybe only your Database/remove-user function
+
+&amp;#40;defrecord YourRefinedComponentMatcher &amp;#91;&amp;#93;
+  defrecord-wrapper.aop/Matcher
+  &amp;#40;match &amp;#91;this protocol function-name function-args&amp;#93;
+    &amp;#40;and &amp;#40;= Database protocol&amp;#41; &amp;#40;= function-name &amp;quot;remove-user&amp;quot;&amp;#41;&amp;#41;&amp;#41;&amp;#41;
+&lt;/code&gt;&lt;/pre&gt;&lt;h4&gt;&lt;a name=&quot;3.&amp;#95;define&amp;#95;your&amp;#95;middleware&amp;#95;to&amp;#95;apply&amp;#95;(thing-to-happen)&quot;&gt;&lt;/a&gt;3. define your middleware to apply (thing-to-happen)&lt;/h4&gt;&lt;pre&gt;&lt;code class=&quot;clojure&quot;&gt;&amp;#40;defn logging-middleware
+  &amp;#91;&amp;#42;fn&amp;#42; this &amp;amp; args&amp;#93;
+  &amp;#40;let &amp;#91;fn-result &amp;#40;apply &amp;#42;fn&amp;#42; &amp;#40;conj args this&amp;#41;&amp;#41;&amp;#93;
+   &amp;#40;println &amp;quot;aop-logging/ function-name:&amp;quot; &amp;#40;:function-name &amp;#40;meta &amp;#42;fn&amp;#42;&amp;#41;&amp;#41;&amp;#41;
+   fn-result&amp;#41;&amp;#41;
+&lt;/code&gt;&lt;/pre&gt;&lt;h4&gt;&lt;a name=&quot;4.&amp;#95;wrap&amp;#95;your&amp;#95;system&amp;#95;(apply&amp;#95;conditional&amp;#95;middleware&amp;#95;to&amp;#95;your&amp;#95;components)&quot;&gt;&lt;/a&gt;4. wrap your system (apply conditional middleware to your components)&lt;/h4&gt; &lt;pre&gt;&lt;code class=&quot;clojure&quot;&gt;;;  construct your instance of SystemMap as usual
+&amp;#40;def system-map &amp;#40;component/system-map :your-component &amp;#40;YourComponent.&amp;#41;&amp;#41;&amp;#41;
+
+;; Using stuartsierra customization way
+&amp;#40;def started-system &amp;#40;-&amp;gt; system-map
+                        &amp;#40;component/update-system 
+                         &amp;#40;comp component/start #&amp;#40;milesian.aop/wrap % logging-middleware&amp;#41;&amp;#41;&amp;#41;&amp;#41;&amp;#41;
+  
+  ;; or, if you prefer a better way to express the same
+  ;; you can use milesian/BigBang
+&amp;#40;def started-system &amp;#40;milesian.bigbang/expand
+                     system-map
+                     {:before-start &amp;#91;&amp;#93;
+                      :after-start  &amp;#91;&amp;#91;milesian.aop/wrap logging-middleware&amp;#93;&amp;#93;}&amp;#41;&amp;#41;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;h2&gt;&lt;a name=&quot;let's&amp;#95;match&amp;#95;with&amp;#95;component&amp;#95;perspective&quot;&gt;&lt;/a&gt;Let's match with component perspective&lt;/h2&gt;&lt;p&gt;milesian/aop includes a &lt;a href='https://github.com/tangrammer/defrecord-wrapper/blob/master/src/defrecord&amp;#95;wrapper/aop.clj#L4-L5'&gt;Matcher&lt;/a&gt; implementation that &lt;strong&gt;uses a stuartsierra/component perspective in contrast to&lt;/strong&gt; function and protocol perspective of &lt;a href='https://github.com/tangrammer/defrecord-wrapper/blob/master/README.md#matchers-available-in-tangrammerdefrecord-wrapper'&gt;matchers&lt;/a&gt; included on more generic tangrammer/defrecord-wrapper lib Also offers a simple &quot;Dependency Component Query Oriented&quot; that I found very useful to think/query the system in a component way :- in our component case is the same as straighforward way &lt;/p&gt;&lt;h4&gt;&lt;a name=&quot;componentmatcher&quot;&gt;&lt;/a&gt;ComponentMatcher&lt;/h4&gt;This implementation  uses the system component-id to match using its component protocols.&lt;p&gt;Example using previous example will match both protocols: Database and Websocket, and therefore all their related fns. Previous matchers examples used protocols and fn-names to do their works, now we are at a high level, a component level.&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;clojure&quot;&gt;
+&amp;#40;milesian.aop.matchers/new-component-matcher :system system-map 
+                                             :components &amp;#91;:your-component&amp;#93; 
+                                             :fn milesian.aop.utils/logging-function-invocation&amp;#41;&amp;#93;                                          
+&lt;/code&gt;&lt;/pre&gt;&lt;h3&gt;&lt;a name=&quot;dependency&amp;#95;component&amp;#95;query&amp;#95;oriented&quot;&gt;&lt;/a&gt;Dependency Component Query Oriented&lt;/h3&gt;This project also contains two ComponentMatcher function constructors that let you match using a dependency component query point of view. &lt;p&gt;Let's extend our data example adding a couple of components more:&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;clojure&quot;&gt;&amp;#40;defprotocol Greetings
+  &amp;#40;morning &amp;#91;&amp;#95;&amp;#93;&amp;#41;&amp;#41;
+
+&amp;#40;defrecord GreetingsComponent &amp;#91;your-component&amp;#93;
+  Greetings
+  &amp;#40;morning &amp;#91;this&amp;#93;
+    &amp;#40;send your-component &amp;quot;Morning, it's a great day here!&amp;quot;&amp;#41;&amp;#41;
+
+&amp;#40;defprotocol Connector
+  &amp;#40;connect &amp;#91;&amp;#95;&amp;#93;&amp;#41;&amp;#41;
+
+&amp;#40;defrecord ConnectorComponent &amp;#91;greetings-component&amp;#93;
+  Connector
+  &amp;#40;connect &amp;#91;this&amp;#93;
+    &amp;#40;morning greetings-component&amp;#41;&amp;#41;
+&lt;/code&gt;&lt;/pre&gt;And also we'll need extend our system definition&lt;pre&gt;&lt;code class=&quot;clojure&quot;&gt;&amp;#40;def system-map &amp;#40;component/system-map   
+                 :your-component &amp;#40;YourComponent.&amp;#41;
+                 :greetings-components &amp;#40;-&amp;gt;&amp;#40;GreetingsComponent.&amp;#41;
+                                          &amp;#40;component/using &amp;#91;:your-component&amp;#93;&amp;#41;&amp;#41;
+                 :connector-component &amp;#40;-&amp;gt;&amp;#40;ConnectorComponent.&amp;#41;
+                                         &amp;#40;component/using &amp;#91;:connector-component&amp;#93;&amp;#41;&amp;#41;&amp;#41;&amp;#41;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;h4&gt;&lt;a name=&quot;componenttransitivedependenciesmatcher&amp;#95;fn&amp;#95;constructor&quot;&gt;&lt;/a&gt;ComponentTransitiveDependenciesMatcher fn constructor&lt;/h4&gt;&lt;strong&gt;&lt;a href='https://github.com/milesian/aop/blob/master/src/milesian/aop/matchers.clj#L33'&gt;new-component-transitive-dependencies-matcher&lt;/a&gt;&lt;/strong&gt; uses &lt;a href='https://github.com/stuartsierra/dependency/blob/master/src/com/stuartsierra/dependency.clj#L19'&gt;stuartsierra/dependency transitive-dependencies&lt;/a&gt; to get all component dependencies for each component specified in &lt;code&gt;:components &amp;#91;...&amp;#93;&lt;/code&gt; argument. &lt;pre&gt;&lt;code class=&quot;clojure&quot;&gt;&amp;#40;milesian.aop.matchers/new-component-transitive-dependencies-matcher 
+ :system system-map 
+ :components &amp;#91;:your-component&amp;#93; 
+ :fn milesian.aop.utils/logging-function-invocation&amp;#41;
+;; it's the same as                                           
+
+&amp;#40;milesian.aop.matchers/new-component-matcher 
+ :system system-map 
+ :components &amp;#91;:your-component :greetings-component :connector-component&amp;#93; 
+ :fn milesian.aop.utils/logging-function-invocation&amp;#41;
+ 
+&lt;/code&gt;&lt;/pre&gt; &lt;h4&gt;&lt;a name=&quot;componenttransitivedependentsmatcher&amp;#95;fn&amp;#95;constructor&quot;&gt;&lt;/a&gt;ComponentTransitiveDependentsMatcher fn constructor&lt;/h4&gt;&lt;strong&gt;&lt;a href='https://github.com/milesian/aop/blob/master/src/milesian/aop/matchers.clj#L40'&gt;new-component-transitive-dependents-matcher&lt;/a&gt;&lt;/strong&gt; uses &lt;a href='https://github.com/stuartsierra/dependency/blob/master/src/com/stuartsierra/dependency.clj#L22'&gt;stuartsierra/dependency transitive-dependents&lt;/a&gt; to get the all dependents components for each component specified in &lt;code&gt;:components &amp;#91;...&amp;#93;&lt;/code&gt; argument.&lt;pre&gt;&lt;code class=&quot;clojure&quot;&gt;&amp;#40;milesian.aop.matchers/new-component-transitive-dependents-matcher 
+ :system system-map 
+ :components &amp;#91;:connector-component&amp;#93; 
+ :fn milesian.aop.utils/logging-function-invocation&amp;#41;
+;; it's the same as                                           
+
+&amp;#40;milesian.aop.matchers/new-component-matcher 
+ :system system-map 
+ :components &amp;#91;:your-component :greetings-component :connector-component&amp;#93; 
+ :fn milesian.aop.utils/logging-function-invocation&amp;#41;
+ 
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+<pubDate>
+Mon, 15 Dec 2014 00:00:00 +0100
+</pubDate>
+<author>
+@tangrammer
+</author>
+</item>
 <item>
 <guid>
 http://tangrammer.github.io/posts/12-12-2014-bigbang.html
