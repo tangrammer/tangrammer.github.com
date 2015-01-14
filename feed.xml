@@ -15,7 +15,7 @@ http://tangrammer.github.io/
 functional experiences from clojure language
 </description>
 <lastBuildDate>
-Wed, 14 Jan 2015 19:14:29 +0100
+Wed, 14 Jan 2015 19:16:15 +0100
 </lastBuildDate>
 <author>
 @tangrammer
@@ -57,7 +57,7 @@ cylon.oauth.client/AccessTokenGrantee
 
 
 
-&lt;/code&gt;&lt;/pre&gt;Then, &lt;span style=&quot;background-color:orange&quot;&gt;&lt;strong&gt;:webapp-oauth-client&lt;/strong&gt;&lt;/span&gt; besides behaving as an independet modular.bidi/&lt;strong&gt;WebService&lt;/strong&gt; connected to its related :router, and responsing to &lt;code&gt;/grant&lt;/code&gt; and &lt;code&gt;/logout&lt;/code&gt; http &lt;code&gt;get&lt;/code&gt; calls it also accomplish cylon.oauth.client/&lt;a href='https://github.com/juxt/cylon/blob/master/src/cylon/oauth/client.clj#L9'&gt;AccessTokenGrantee&lt;/a&gt; for granting privileges, logout, soliciting access token, validating token and refreshing tokens. &lt;p&gt;cylon.oauth.client.request-authenticator-client/RequestAuthenticatorClient&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;clojure&quot;&gt;
+&lt;/code&gt;&lt;/pre&gt;Then, &lt;span style=&quot;background-color:orange&quot;&gt;&lt;strong&gt;:webapp-oauth-client&lt;/strong&gt;&lt;/span&gt; besides behaving as an independet modular.bidi/&lt;strong&gt;WebService&lt;/strong&gt; connected to its related :router, and responsing to &lt;code&gt;/grant&lt;/code&gt; and &lt;code&gt;/logout&lt;/code&gt; http &lt;code&gt;get&lt;/code&gt; calls it also accomplish cylon.oauth.client/&lt;a href='https://github.com/juxt/cylon/blob/master/src/cylon/oauth/client.clj#L9'&gt;AccessTokenGrantee&lt;/a&gt; for granting privileges, logout, soliciting access token, validating token and refreshing tokens. &lt;p&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;hr&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;/p&gt;&lt;h3&gt;&lt;a name=&quot;requestauthenticator&amp;#95;:client-request-authenticator&quot;&gt;&lt;/a&gt;RequestAuthenticator :client-request-authenticator&lt;/h3&gt;&lt;p&gt;cylon.oauth.client.request-authenticator-client/RequestAuthenticatorClient&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;clojure&quot;&gt;
 RequestAuthenticatorClient Protocols implemented
 ;===============================
 
