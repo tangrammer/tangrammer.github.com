@@ -80,14 +80,18 @@ cylon.oauth.client/AccessTokenGrantee
     in a new request being made with an access token, if possible.&quot;
     &#41;&#41;
 
+
+
+
+</code></pre>Then, <span style="background-color:orange"><strong>:webapp-oauth-client</strong></span> besides behaving as an independet modular.bidi/<strong>WebService</strong> connected to its related :router, and responsing to <code>/grant</code> and <code>/logout</code> http <code>get</code> calls it also accomplish cylon.oauth.client/<a href='https://github.com/juxt/cylon/blob/master/src/cylon/oauth/client.clj#L9'>AccessTokenGrantee</a> for granting privileges, logout, soliciting access token, validating token and refreshing tokens. <p>cylon.oauth.client.request-authenticator-client/RequestAuthenticatorClient</p><pre><code class="clojure">
+RequestAuthenticatorClient Protocols implemented
+;===============================
+
 cylon.authentication.protocols/RequestAuthenticator
 &#40;authenticate &#91;&#95; request&#93;
     &quot;Return &#40;as a map&#41; any credentials that can be determined from the
     given Ring request&quot;&#41;
-
-
-
-</code></pre><p>Then, <span style="background-color:orange"><strong>:webapp-oauth-client</strong></span> besides behaving as an independet modular.bidi/<strong>WebService</strong> connected to its related :router, and responsing to <code>/grant</code> and <code>/logout</code> http <code>get</code> calls it also accomplish cylon.oauth.client/<a href='https://github.com/juxt/cylon/blob/master/src/cylon/oauth/client.clj#L9'>AccessTokenGrantee</a> for granting privileges, logout, soliciting access token, validating token and refreshing tokens. </p> <p>And in this demo project we use also this client as a cylon.authentication.protocols/<a href='https://github.com/juxt/cylon/blob/master/src/cylon/authentication/protocols.clj#L5'>RequestAuthenticator</a> behaving as oauth resource-server, letting us to protect specific web responses (protected feature web page)  </p><p><br><br><br><hr><br><br><br></p><h3><a name="oauth&#95;provider&#95;:authorization-server"></a>Oauth Provider :authorization-server</h3><pre><code class="clojure">cylon.oauth.server.server/AuthorizationServer
+</code></pre> <p>In this demo project, our <strong>:website</strong> component has restricted pages, so it uses a  cylon.authentication.protocols/<a href='https://github.com/juxt/cylon/blob/master/src/cylon/authentication/protocols.clj#L5'>RequestAuthenticator</a> to protect specific web responses (protected feature web page)  </p><p><br><br><br><hr><br><br><br></p><h3><a name="oauth&#95;provider&#95;:authorization-server"></a>Oauth Provider :authorization-server</h3><pre><code class="clojure">cylon.oauth.server.server/AuthorizationServer
 
 AuthorizationServer Protocols implemented
 ;========================================

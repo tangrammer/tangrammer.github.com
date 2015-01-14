@@ -15,7 +15,7 @@ http://tangrammer.github.io/
 functional experiences from clojure language
 </description>
 <lastBuildDate>
-Tue, 13 Jan 2015 23:09:43 +0100
+Wed, 14 Jan 2015 19:14:29 +0100
 </lastBuildDate>
 <author>
 @tangrammer
@@ -54,14 +54,18 @@ cylon.oauth.client/AccessTokenGrantee
     in a new request being made with an access token, if possible.&amp;quot;
     &amp;#41;&amp;#41;
 
+
+
+
+&lt;/code&gt;&lt;/pre&gt;Then, &lt;span style=&quot;background-color:orange&quot;&gt;&lt;strong&gt;:webapp-oauth-client&lt;/strong&gt;&lt;/span&gt; besides behaving as an independet modular.bidi/&lt;strong&gt;WebService&lt;/strong&gt; connected to its related :router, and responsing to &lt;code&gt;/grant&lt;/code&gt; and &lt;code&gt;/logout&lt;/code&gt; http &lt;code&gt;get&lt;/code&gt; calls it also accomplish cylon.oauth.client/&lt;a href='https://github.com/juxt/cylon/blob/master/src/cylon/oauth/client.clj#L9'&gt;AccessTokenGrantee&lt;/a&gt; for granting privileges, logout, soliciting access token, validating token and refreshing tokens. &lt;p&gt;cylon.oauth.client.request-authenticator-client/RequestAuthenticatorClient&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;clojure&quot;&gt;
+RequestAuthenticatorClient Protocols implemented
+;===============================
+
 cylon.authentication.protocols/RequestAuthenticator
 &amp;#40;authenticate &amp;#91;&amp;#95; request&amp;#93;
     &amp;quot;Return &amp;#40;as a map&amp;#41; any credentials that can be determined from the
     given Ring request&amp;quot;&amp;#41;
-
-
-
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Then, &lt;span style=&quot;background-color:orange&quot;&gt;&lt;strong&gt;:webapp-oauth-client&lt;/strong&gt;&lt;/span&gt; besides behaving as an independet modular.bidi/&lt;strong&gt;WebService&lt;/strong&gt; connected to its related :router, and responsing to &lt;code&gt;/grant&lt;/code&gt; and &lt;code&gt;/logout&lt;/code&gt; http &lt;code&gt;get&lt;/code&gt; calls it also accomplish cylon.oauth.client/&lt;a href='https://github.com/juxt/cylon/blob/master/src/cylon/oauth/client.clj#L9'&gt;AccessTokenGrantee&lt;/a&gt; for granting privileges, logout, soliciting access token, validating token and refreshing tokens. &lt;/p&gt; &lt;p&gt;And in this demo project we use also this client as a cylon.authentication.protocols/&lt;a href='https://github.com/juxt/cylon/blob/master/src/cylon/authentication/protocols.clj#L5'&gt;RequestAuthenticator&lt;/a&gt; behaving as oauth resource-server, letting us to protect specific web responses (protected feature web page)  &lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;hr&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;/p&gt;&lt;h3&gt;&lt;a name=&quot;oauth&amp;#95;provider&amp;#95;:authorization-server&quot;&gt;&lt;/a&gt;Oauth Provider :authorization-server&lt;/h3&gt;&lt;pre&gt;&lt;code class=&quot;clojure&quot;&gt;cylon.oauth.server.server/AuthorizationServer
+&lt;/code&gt;&lt;/pre&gt; &lt;p&gt;In this demo project, our &lt;strong&gt;:website&lt;/strong&gt; component has restricted pages, so it uses a  cylon.authentication.protocols/&lt;a href='https://github.com/juxt/cylon/blob/master/src/cylon/authentication/protocols.clj#L5'&gt;RequestAuthenticator&lt;/a&gt; to protect specific web responses (protected feature web page)  &lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;hr&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;/p&gt;&lt;h3&gt;&lt;a name=&quot;oauth&amp;#95;provider&amp;#95;:authorization-server&quot;&gt;&lt;/a&gt;Oauth Provider :authorization-server&lt;/h3&gt;&lt;pre&gt;&lt;code class=&quot;clojure&quot;&gt;cylon.oauth.server.server/AuthorizationServer
 
 AuthorizationServer Protocols implemented
 ;========================================
